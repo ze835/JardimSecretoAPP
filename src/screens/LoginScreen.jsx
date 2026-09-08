@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,7 +7,55 @@ import {
   View,
 } from "react-native";
 
+import api from "../services/api";
+
 export default function LoginScreen({ navigation }) {
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    async function handleLogin() {
+
+      console.log("Botão de cadastro clicado");
+      
+      console.log("Email:", email);
+      console.log("Password:", password);
+      
+      // Verifica se todos os campos foram preenchidos
+      if ( !email || !password ) {
+        console.log("ERRO: Existem campos vazios.");
+        return;
+      }
+  
+      console.log("Todos os campos foram preenchidos");
+  
+      
+     
+  
+      try {
+        // Faz a requisição POST para a API
+        const response = await api.post(
+          "/users/login",
+          {
+            email: email,
+            password: password,
+          }
+        );
+        console.log("Cadastro realizado com sucesso!");
+        navigation.navigate("Tabs");
+  
+      } catch (error) {
+  
+        console.log("Erro no cadastro:", error);
+  
+        console.log(
+          "Mensagem da API:",
+          error.response?.data?.message ||
+          "Não foi possível realizar o cadastro."
+        );
+      }
+    }
+  
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
@@ -17,6 +66,8 @@ export default function LoginScreen({ navigation }) {
 
       <TextInput
         style={styles.input}
+        value={email}
+        onChangeText={setEmail}
         placeholder="Digite seu e-mail"
       />
 
@@ -24,13 +75,15 @@ export default function LoginScreen({ navigation }) {
 
       <TextInput
         style={styles.input}
+        value={password}
+        onChangeText={setPassword}
         placeholder="Digite sua senha"
         secureTextEntry
       />
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate("Tabs")}
+        onPress={handleLogin}
       >
         <Text style={styles.buttonText}>ENTRAR</Text>
       </TouchableOpacity>

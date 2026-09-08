@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import SplashScreen from "../screens/SplashScreen";
 import TabNavigation from "./tabNavigation";
@@ -17,6 +18,12 @@ export default function StackNavigation() {
       <Stack.Screen
         name="Cadastro"
         component={RegisterScreen}
+        options={{ headerShown: false }}
+      />
+
+<Stack.Screen
+        name="Login"
+        component={LoginScreen}
         options={{ headerShown: false }}
       />
 
